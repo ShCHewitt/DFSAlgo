@@ -21,6 +21,3 @@ player_stats = [[td.getText() for td in rows[i].findAll('td')]
 
 stats = pd.DataFrame(player_stats, columns=headers)
 print(stats)
-
-teamToPlayers = dict(zip(stats[1], stats[2:5]))
-print(teamToPlayers)
