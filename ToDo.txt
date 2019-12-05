@@ -1,0 +1,31 @@
+ToDo: 12/4
+
+Reachable:
+ - Add sort by's for every other relevant stat.
+ - Do calculations for 50/50 value and Shane Stat to quick measure consistency of each player.
+ - Make a map of each team and which players are currently on that team. (could be web scraping)
+ - Set start percentages of each player.
+
+ - List out all of the things we want to include in the algorithm to score players on a given night.
+ - Figure out how we want to score them and how we want to weigh each one.
+ - In algorithm we could include a constant on if they are starting or not based on each player.
+
+
+
+
+Web Scraping: 
+ - Make a map of teams.
+ - Scrape the web / Buy a data set for the games that have been played thus far in the year to get up to date stats.
+ - Get schedules of teams.
+ - Make map of the injured players of teams.
+ - Compare the maps of injured players and team roster to make another map of eligible players.
+ - Give the program the current date, then scrape the web for the games on the given date.
+
+
+Beyond the current scope:
+ - Make a user interface GUI that could be input into a website.
+ - 
+
+
+Optimization:
+ - Backlog the algorithm to test it (will be free).

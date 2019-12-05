@@ -1,0 +1,9 @@
+Prior to 12/4:
+- Method that makes a map of each player with data of all of their performances.
+- Method to read through the specific data file.
+- Comparator methods for Average Cost and Average Fanduel Points.
+- SortBy method that can be called directly.
+12/4:
+- SortBy method that takes a user input for what they want to sort by and giving options.
+- Calculation for Standard deviation added to the map creation method and added to the constructor for the Player class.
+
