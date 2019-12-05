@@ -1,8 +1,5 @@
-import org.bytedeco.opencv.opencv_dnn.PriorBoxLayer;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Fandy {
@@ -63,9 +60,6 @@ public class Fandy {
             this.cost = cost;
         }
 
-        //        public String toString() {
-//            return name + " " + points;
-//        }
     }
 
     public class Player {
@@ -77,10 +71,11 @@ public class Fandy {
         private String position;
         private double cost;
         private double averagePoints;
+        private double stdDev;
 
         //Constructor for the list of actual players that will be used to output to the console.
         public Player(int playerID, String name, String teamName, double averageMinutesPlayed, double averageUsageRate,
-                      String position, double cost, double averagePoints) {
+                      String position, double cost, double averagePoints, double stdDev) {
             this.playerID = playerID;
             this.name = name;
             this.teamName = teamName;
@@ -89,12 +84,12 @@ public class Fandy {
             this.position = position;
             this.cost = cost;
             this.averagePoints = averagePoints;
+            this.stdDev = stdDev;
         }
 
         public String toString() {
-            String string = name + " who played for: " + teamName + " played an average of " + averageMinutesPlayed + " minutes " +
-                    "with a usage rate of: " + averageUsageRate + " at an average cost of " + cost + " scoring an average of " +
-                    averagePoints + " Fanduel points.\n";
+            String string = "Name: " + name + " Team: " + teamName + " Average Fanduel Points: " + averagePoints + " Standard Deviation: " +
+                    stdDev;
             return string;
         }
     }
@@ -111,16 +106,6 @@ public class Fandy {
         }
     }
 
-//    private class sortByMinutesPlayed implements Comparator<Player> {
-//        public int compare(Player p1, Player p2) {
-//            return (int) (p2.averageMinutesPlayed - p1.averageMinutesPlayed);
-//        }
-//    }
-    private class sortByUsage implements Comparator<Player> {
-        public int compare(Player p1, Player p2) {
-            return (int) (p2.averageUsageRate-p1.averageUsageRate);
-        }
-}
 
     public Map<Integer, ArrayList<PlayerPerformance>> makePerformanceMap(String filename) throws Exception{
         BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -171,6 +156,7 @@ public class Fandy {
             double totalCost = 0;
             double totalMinutesPlayed = 0;
             double totalUsageRate = 0;
+            double totalDeviation = 0;
             int appearances = 0;
 
             for (int i = 0; i < map.get(player).size();i++) {
@@ -189,9 +175,18 @@ public class Fandy {
             double averageMinutesPlayed = totalMinutesPlayed/appearances;
             double averageUsageRate = totalUsageRate/appearances;
 
+            double dev;
+            double totalDev = 0;
+            for (int i=0;i < map.get(player).size(); i++) {
+                dev = Math.abs(map.get(player).get(i).points - averagePoints);
+                dev = dev * dev;
+                totalDev += dev;
+            }
+            double stdDev = Math.sqrt(Math.abs(totalDev)/appearances);
+
             //make the player.
             Player aggregatedPlayer = new Player(player, map.get(player).get(0).name, map.get(player).get(0).teamName,
-                    averageMinutesPlayed, averageUsageRate, map.get(player).get(0).position, averageCost,averagePoints);
+                    averageMinutesPlayed, averageUsageRate, map.get(player).get(0).position, averageCost,averagePoints, stdDev);
 
             //put the player in the list.
             players.add(players.size(), aggregatedPlayer);
@@ -200,29 +195,46 @@ public class Fandy {
     }
 
     public ArrayList<Player> sortBy(String what, ArrayList<Player> players) {
-        if (what.equals("fdPoints")) {
-            Comparator<Player> fdPoints = new sortByFanduelPoints();
-            players.sort(fdPoints);
-            return players;
-        }
-
-        else if (what.equals("cost")) {
-            Comparator<Player> value = new sortByCost();
-            players.sort(value);
-            return players;
-        }
-
-        else if (what.equals("minutesPlayed")) {
+        switch (what) {
+            case "fdPoints":
+                Comparator<Player> fdPoints = new sortByFanduelPoints();
+                players.sort(fdPoints);
+                return players;
+            case "cost":
+                Comparator<Player> value = new sortByCost();
+                players.sort(value);
+                return players;
+            case "minutesPlayed":
 //            Comparator<Player> minPlayed = new sortByMinutesPlayed();
 //            players.sort(minPlayed);
-            return players;
-        }
-        else if (what.equals("usage")) {
-            Comparator<Player> usage = new sortByUsage();
-            players.sort(usage);
-            return players;
+                return players;
         }
 
+        return players;
+    }
+
+    public ArrayList<Player> consoleSort(ArrayList<Player> players) {
+        Scanner userInput = new Scanner(System.in);
+
+        String response = "";
+
+        System.out.println("What would you like to sort by? \n" +
+                "Your options are: \n" +
+                "[Fanduel Points] Fanduel Points (High to Low)\n" +
+                "[Average Cost] Average Cost (High to Low)");
+
+        response = userInput.nextLine();
+
+        switch (response) {
+            case "Fanduel Points":
+                sortBy("fdPoints", players);
+                System.out.println(players);
+                return players;
+            case "Average Cost":
+                sortBy("cost", players);
+                System.out.println(players);
+                return players;
+        }
         return players;
     }
 
@@ -230,18 +242,17 @@ public class Fandy {
 
 
     public static void main(String[] args) {
-        String filename = "data/data2018-2019.csv";
+        String filename = "data/nbaDFSdata.txt";
         Fandy shane = new Fandy();
         try {
-
             ArrayList<Player> players = shane.aggregateMap(shane.makePerformanceMap(filename));
-            System.out.println(shane.sortBy("fdPoints", players));
+
+            System.out.println(shane.sortBy("cost", players));
+            shane.consoleSort(players);
 
         } catch (Exception e) {
             System.out.println("Something went wrong.");
         }
 
     }
-
-
 }
