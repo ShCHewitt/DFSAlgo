@@ -72,10 +72,14 @@ public class Fandy {
         private double cost;
         private double averagePoints;
         private double stdDev;
+        private double value;
+        private double fiftyFiftyValue;
+        private double consistencyStat; //fiftyFiftyValue multiplied by average fdPoints/stdDev.
 
         //Constructor for the list of actual players that will be used to output to the console.
         public Player(int playerID, String name, String teamName, double averageMinutesPlayed, double averageUsageRate,
-                      String position, double cost, double averagePoints, double stdDev) {
+                      String position, double cost, double averagePoints, double stdDev, double value, double fiftyFiftyValue,
+                      double consistencyStat) {
             this.playerID = playerID;
             this.name = name;
             this.teamName = teamName;
@@ -85,24 +89,46 @@ public class Fandy {
             this.cost = cost;
             this.averagePoints = averagePoints;
             this.stdDev = stdDev;
+            this.value = value;
+            this.fiftyFiftyValue = fiftyFiftyValue;
+            this.consistencyStat = consistencyStat;
         }
 
         public String toString() {
             String string = "Name: " + name + " Team: " + teamName + " Average Fanduel Points: " + averagePoints + " Standard Deviation: " +
-                    stdDev;
+                    stdDev + " Consistency Stat: " + consistencyStat + " Average Cost: " + cost;
             return string;
         }
     }
 
     private class sortByFanduelPoints implements Comparator<Player> {
         public int compare(Player p1, Player p2) {
-            return (int) (p2.averagePoints-p1.averagePoints);
+            return Double.compare(p2.averagePoints, p1.averagePoints);
         }
     }
 
     private class sortByCost implements Comparator<Player> {
         public int compare(Player p1, Player p2) {
-            return (int) (p2.cost - p1.cost);
+            return Double.compare(p2.cost, p1.cost);
+        }
+    }
+
+    private class sortByValue implements Comparator<Player> {
+        public int compare(Player p1, Player p2) {
+            return Double.compare(p2.value, p1.value);
+        }
+    }
+
+    private class sortByFiftyValue implements Comparator<Player> {
+        public int compare(Player p1, Player p2) {
+            return Double.compare(p2.fiftyFiftyValue, p1.fiftyFiftyValue);
+        }
+    }
+
+    private class sortByConsistencyStat implements Comparator<Player> {
+        public int compare(Player p1, Player p2) {
+            return Double.compare(p2.consistencyStat, p1.consistencyStat);
+//            return (int) (p2.consistencyStat - p1.consistencyStat);
         }
     }
 
@@ -156,7 +182,6 @@ public class Fandy {
             double totalCost = 0;
             double totalMinutesPlayed = 0;
             double totalUsageRate = 0;
-            double totalDeviation = 0;
             int appearances = 0;
 
             for (int i = 0; i < map.get(player).size();i++) {
@@ -183,10 +208,21 @@ public class Fandy {
                 totalDev += dev;
             }
             double stdDev = Math.sqrt(Math.abs(totalDev)/appearances);
+            double value = (1000 * averagePoints / averageCost);
+            double fifValue = (averagePoints / stdDev);
+            double consistencyValue = (value * fifValue);
+
+
+            //Deals with the not important people and fixes the comparators
+            if (stdDev == 0) {
+                fifValue = 0;
+                consistencyValue = 0;
+            }
 
             //make the player.
             Player aggregatedPlayer = new Player(player, map.get(player).get(0).name, map.get(player).get(0).teamName,
-                    averageMinutesPlayed, averageUsageRate, map.get(player).get(0).position, averageCost,averagePoints, stdDev);
+                    averageMinutesPlayed, averageUsageRate, map.get(player).get(0).position, averageCost,averagePoints, stdDev,
+                    value, fifValue, consistencyValue);
 
             //put the player in the list.
             players.add(players.size(), aggregatedPlayer);
@@ -201,12 +237,20 @@ public class Fandy {
                 players.sort(fdPoints);
                 return players;
             case "cost":
-                Comparator<Player> value = new sortByCost();
+                Comparator<Player> cost = new sortByCost();
+                players.sort(cost);
+                return players;
+            case "value":
+                Comparator<Player> value = new sortByValue();
                 players.sort(value);
                 return players;
-            case "minutesPlayed":
-//            Comparator<Player> minPlayed = new sortByMinutesPlayed();
-//            players.sort(minPlayed);
+            case "50val":
+                Comparator<Player> val50 = new sortByFiftyValue();
+                players.sort(val50);
+                return players;
+            case "consistency":
+                Comparator<Player> consistency = new sortByConsistencyStat();
+                players.sort(consistency);
                 return players;
         }
 
@@ -217,23 +261,49 @@ public class Fandy {
         Scanner userInput = new Scanner(System.in);
 
         String response = "";
+        while (!response.equals("quit")) {
+            System.out.println("What would you like to sort by? \n" +
+                    "Your options are: \n" +
+                    "[Fanduel Points] Fanduel Points (High to Low)\n" +
+                    "[Average Cost] Average Cost (High to Low)\n" +
+                    "[Value] Value (High to Low)\n" +
+                    "[Fifty Value] Fifty Fifty Value (High to Low)\n" +
+                    "[Consistency Stat] Consistency Stat (High to Low)\n" +
+                    "[quit] Quit");
 
-        System.out.println("What would you like to sort by? \n" +
-                "Your options are: \n" +
-                "[Fanduel Points] Fanduel Points (High to Low)\n" +
-                "[Average Cost] Average Cost (High to Low)");
+            response = userInput.nextLine();
 
-        response = userInput.nextLine();
-
-        switch (response) {
-            case "Fanduel Points":
-                sortBy("fdPoints", players);
-                System.out.println(players);
-                return players;
-            case "Average Cost":
-                sortBy("cost", players);
-                System.out.println(players);
-                return players;
+            switch (response) {
+                case "Fanduel Points":
+                    System.out.println("Sorting by Fanduel Points.");
+                    sortBy("fdPoints", players);
+                    System.out.println(players);
+                    break;
+                case "Average Cost":
+                    System.out.println("Sorting by Average Cost.");
+                    sortBy("cost", players);
+                    System.out.println(players);
+                    break;
+                case "Value":
+                    System.out.println("Sorting by Value.");
+                    sortBy("value", players);
+                    System.out.println(players);
+                    break;
+                case "Fifty Value":
+                    System.out.println("Sorting by Fifty Fifty Value.");
+                    sortBy("50val", players);
+                    System.out.println(players);
+                    break;
+                case "Consistency Stat":
+                    System.out.println("Sorting by Consistency Stat.");
+                    sortBy("consistency", players);
+                    System.out.println(players);
+                    break;
+                default:
+                    if (!response.equals("quit")) {
+                        System.out.println("nothing was done because you did not enter an option.");
+                    }
+            }
         }
         return players;
     }
@@ -247,11 +317,12 @@ public class Fandy {
         try {
             ArrayList<Player> players = shane.aggregateMap(shane.makePerformanceMap(filename));
 
-            System.out.println(shane.sortBy("cost", players));
+//            System.out.println(shane.sortBy("consistency", players));
+
             shane.consoleSort(players);
 
         } catch (Exception e) {
-            System.out.println("Something went wrong.");
+            System.out.println(e);
         }
 
     }
