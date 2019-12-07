@@ -1,15 +1,25 @@
-ToDo: 12/5
+ToDo: 12/7
 
 Reachable:
- - Make a map of each team and which players are currently on that team. (could be web scraping)
- - Set start percentages of each player.
+ - Rank which teams have the lowest average ranking in the consistency sort.
+ - Simplify the inputs of the console sort function, only need to input the Map.
+ - Create a display method for the team rankings.
 
- - Add outputs for the rankings of each player in each sort, we could then weigh where each player stands in each stat as a value and then sort that.
+ - Draw out an image for what we want the GUI to look like and the things that we want it to do.
+ - Code the baseline for the GUI.
 
+ - Figure out how to write data to the exact specifications of the csv file that we currently have for the current season.
+ - See if we can do this for the season thus far.
+ - See if we can continue to update the data up until the current date.
+
+this is later: and important.
  - List out all of the things we want to include in the algorithm to score players on a given night.
+
  - Figure out how we want to score them and how we want to weigh each one.
  - In algorithm we could include a constant on if they are starting or not based on each player.
 
+
+ - Put the display function into a GUI.
 
 
 
@@ -23,9 +33,10 @@ Web Scraping:
 
 
 Beyond the current scope:
+
  - Make a user interface GUI that could be input into a website.
- - 
+ - Finish the GUI.
 
 
 Optimization:
- - Backlog the algorithm to test it (will be free).
+ - Backlog the algorithm to test it (will be free). :)
