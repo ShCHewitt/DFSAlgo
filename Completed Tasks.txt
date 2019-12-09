@@ -1,7 +1,7 @@
 Prior to 12/4:
 - Method that makes a map of each player with data of all of their performances.
 - Method to read through the specific data file.
-- Comparator methods for Average Cost and Average DFS, specifically Fanduel, Points.
+- Comparator methods for Average Cost and Average Fanduel Points.
 - SortBy method that can be called directly.
 12/4:
 - SortBy method that takes a user input for what they want to sort by and giving options.
@@ -14,14 +14,5 @@ Prior to 12/4:
 - Changed all of the comparators to things that will always work.
 - Changed the switch statements in the console sort.
 - Added a while loop so that the console sort will run until the user types quit.
-12/6:
-- Wrote a method to track the average rank of each player in all of the calculated metrics so far.
-- Created a comparator for the average rank stat of each player and added it as one of the console options.
-12/7:
-- Added percent of games started stat to each player, created a comparator for them, added to menu of sort options.
-- Made a questionable looking display function that gets the job done for now but will have to be amended.
-- Made a map of all of the rosters of each team.
-- Made a function that ranks the NBA teams by the ones the output the most fanduel points per player per game.
-- Added to the function to allow for ranking of nba teams by their players average rank in the calculated metrics.
 
 

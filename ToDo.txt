@@ -12,6 +12,8 @@ Reachable:
  - See if we can do this for the season thus far.
  - See if we can continue to update the data up until the current date.
 
+ - Read through the excel files from the python file to make a map of each teams schedule throughout the season Map<String, ArrayList<String>>
+
 this is later: and important.
  - List out all of the things we want to include in the algorithm to score players on a given night.
 
