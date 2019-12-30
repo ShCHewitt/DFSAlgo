@@ -14,5 +14,6 @@ Prior to 12/4:
 - Changed all of the comparators to things that will always work.
 - Changed the switch statements in the console sort.
 - Added a while loop so that the console sort will run until the user types quit.
-
+12/21:
+- Wrote a method to sort players within a specific team and output the players in order.
 
