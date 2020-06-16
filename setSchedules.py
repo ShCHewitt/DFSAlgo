@@ -1,7 +1,13 @@
-from urllib.request import urlopen
+import urllib
 from bs4 import BeautifulSoup
 import pandas as pd
+import xlsxwriter
 
+# A quick fix to a certificate authentification failed error. Specific to my computer.
+import os, ssl
+if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
+    getattr(ssl, '_create_unverified_context', None)):
+    ssl._create_default_https_context = ssl._create_unverified_context
 
 # URLs for each of the months that we need to scrape through:
 # https://www.basketball-reference.com/leagues/NBA_2019_games-october.html
@@ -15,21 +21,20 @@ import pandas as pd
 #
 
 def main():
-    # data_scrape("https://www.basketball-reference.com/leagues/NBA_2019_games-october.html", "october")
+    data_scrape("https://www.basketball-reference.com/leagues/NBA_2019_games-october.html", "october")
     data_scrape("https://www.basketball-reference.com/leagues/NBA_2019_games-november.html", "november")
-    # data_scrape("https://www.basketball-reference.com/leagues/NBA_2019_games-december.html", "december")
-    # data_scrape("https://www.basketball-reference.com/leagues/NBA_2019_games-january.html", "january")
-    # data_scrape("https://www.basketball-reference.com/leagues/NBA_2019_games-february.html", "february")
-    # data_scrape("https://www.basketball-reference.com/leagues/NBA_2019_games-march.html", "march")
-    # data_scrape("https://www.basketball-reference.com/leagues/NBA_2019_games-april.html", "april")
-
+    data_scrape("https://www.basketball-reference.com/leagues/NBA_2019_games-december.html", "december")
+    data_scrape("https://www.basketball-reference.com/leagues/NBA_2019_games-january.html", "january")
+    data_scrape("https://www.basketball-reference.com/leagues/NBA_2019_games-february.html", "february")
+    data_scrape("https://www.basketball-reference.com/leagues/NBA_2019_games-march.html", "march")
+    data_scrape("https://www.basketball-reference.com/leagues/NBA_2019_games-april.html", "april")
 
 
 def data_scrape(url, month):
     print("Entering Data Scrape for making NBA team schedules.")
     # lets just hard code the urls for each month. no point in optimizing it.
 
-    html = urlopen(url)
+    html = urllib.request.urlopen(url)
 
     soup = BeautifulSoup(html, features="html.parser")
 
@@ -53,10 +58,10 @@ def data_scrape(url, month):
 
     writer.save()
 
+    # Verifies that the correct operation is happening.
     print(data)
 
     return data
-
 
 # Run the file
 main()
