@@ -2,6 +2,7 @@ import urllib
 from bs4 import BeautifulSoup
 import pandas as pd
 import xlsxwriter
+import schedule
 
 # A quick fix to a certificate authentification failed error. Specific to my computer.
 import os, ssl
