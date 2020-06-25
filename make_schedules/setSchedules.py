@@ -33,7 +33,6 @@ def main():
 
 def data_scrape(url, month):
     print("Entering Data Scrape for making NBA team schedules.")
-    # lets just hard code the urls for each month. no point in optimizing it.
 
     html = urllib.request.urlopen(url)
 
@@ -46,23 +45,32 @@ def data_scrape(url, month):
 
     headers = headers[1:]
 
+
     rows = soup.findAll('tr')[1:]
 
     rest_data = [[td.getText() for td in rows[i].findAll('td')]
                  for i in range(len(rows))]
 
-    data = pd.DataFrame(rest_data, columns=headers)
+    dates = [[data.getText() for data in rows[i].findAll('th')]
+                for i in range(len(rows))]
 
-    writer = pd.ExcelWriter(month + '.xlsx', engine='xlsxwriter')
+    print(dates)
 
-    data.to_excel(writer, sheet_name='Sheet1')
+    dates2 = pd.DataFrame(dates)
+
+    other_data = pd.DataFrame(rest_data, columns = headers)
+
+    frames = [dates2, other_data]
+
+    result = pd.concat(frames, axis=1)
+
+    writer = pd.ExcelWriter('../data/' + month + '.xlsx', engine='xlsxwriter')
+
+    result.to_excel(writer, sheet_name='Sheet1')
 
     writer.save()
 
-    # Verifies that the correct operation is happening.
-    print(data)
-
-    return data
+    return result
 
 # Run the file
 main()

@@ -6,7 +6,7 @@ import xlrd
 def xlsx_to_csv(filename, month_name):
     excel_file = xlrd.open_workbook(filename)
     sheet_name = excel_file.sheet_by_name('Sheet1')
-    string = month_name + ".csv"
+    string = "data/" + month_name + ".csv"
     csv_file = open(string, 'w')
     writer = csv.writer(csv_file)
 
@@ -19,8 +19,8 @@ def xlsx_to_csv(filename, month_name):
 #   Need to make file name for the csv.
 def set_up_finish():
     month_names = ['october', 'november', 'december', 'january', 'february', 'march', 'april']
-    file_names = ['october.xlsx', 'november.xlsx', 'december.xlsx', 'january.xlsx', 'february.xlsx', 'march.xlsx',
-                  'april.xlsx']
+    file_names = ['data/october.xlsx', 'data/november.xlsx', 'data/december.xlsx', 'data/january.xlsx', 'data/february.xlsx', 'data/march.xlsx',
+                  'data/april.xlsx']
 
     for i in range(len(month_names)):
         xlsx_to_csv(file_names[i], month_names[i])

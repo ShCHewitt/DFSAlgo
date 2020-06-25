@@ -9,6 +9,7 @@ import csv
 
 class Game:
     def __init__(self):
+        self.date = None
         self.home_team = None
         self.home_score = None
         self.away_team = None
@@ -48,18 +49,19 @@ class Schedule:
             for game in read:
                 # Read into a game variable.
                 nba_game = Game()
-                nba_game.start_time = game[1]
-                nba_game.home_team = game[4]
-                nba_game.away_team = game[2]
-                nba_game.home_score = game[5]
-                nba_game.away_score = game[3]
+                nba_game.date = game[1]
+                nba_game.start_time = game[2]
+                nba_game.home_team = game[5]
+                nba_game.away_team = game[3]
+                nba_game.home_score = game[6]
+                nba_game.away_score = game[4]
 
                 # Only care about the regular season games. There are 1230 Regular season games but we need to kill 7 header lines in the games.
                 if len(list_of_games) < 1237:
                     list_of_games.append(nba_game)
 
                 # Add to the set of teams just to make sure we have all 30.
-                list_of_teams.add(game[4])
+                list_of_teams.add(game[5])
 
         # Remove the headers that were added as a team.
         list_of_teams.remove('Home/Neutral')
@@ -80,6 +82,10 @@ class Schedule:
                 full_league_schedules[game.home_team].append(game)
 
         self.schedule = full_league_schedules
+
+        # # Uncomment to verify that each team has 82 games in the regular season.
+        # for team in full_league_schedules.keys():
+        #     print(len(full_league_schedules[team]))
 
 
 
