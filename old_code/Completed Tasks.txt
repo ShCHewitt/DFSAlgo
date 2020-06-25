@@ -1,0 +1,19 @@
+Prior to 12/4:
+- Method that makes a map of each player with data of all of their performances.
+- Method to read through the specific data file.
+- Comparator methods for Average Cost and Average Fanduel Points.
+- SortBy method that can be called directly.
+12/4:
+- SortBy method that takes a user input for what they want to sort by and giving options.
+- Calculation for Standard deviation added to the map creation method and added to the constructor for the Player class.
+12/5:
+- Added value, fifty fifty value, and consistency stat to the player class.
+- Added sorting mechanism for value, fifty fifty value, and consistency stat that works.
+- Dealt with the few anomalies in the data that resulted in the standard deviation of a player being zero, which led to the rest of the calcuations resulting in errors by the stats to zero.
+- Added the 3 to the consoleSort method.
+- Changed all of the comparators to things that will always work.
+- Changed the switch statements in the console sort.
+- Added a while loop so that the console sort will run until the user types quit.
+12/21:
+- Wrote a method to sort players within a specific team and output the players in order.
+

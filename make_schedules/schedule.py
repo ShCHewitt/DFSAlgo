@@ -28,13 +28,13 @@ class Schedule:
         start_times = []
 
         file_list = list()
-        file_list.append("data/october.csv")
-        file_list.append("data/november.csv")
-        file_list.append("data/december.csv")
-        file_list.append("data/january.csv")
-        file_list.append("data/february.csv")
-        file_list.append("data/march.csv")
-        file_list.append("data/april.csv")
+        file_list.append("../data/october.csv")
+        file_list.append("../data/november.csv")
+        file_list.append("../data/december.csv")
+        file_list.append("../data/january.csv")
+        file_list.append("../data/february.csv")
+        file_list.append("../data/march.csv")
+        file_list.append("../data/april.csv")
 
         # Initialize a set of teams.
         list_of_teams = set()

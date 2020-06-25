@@ -1,0 +1,44 @@
+ToDo: 12/7
+
+Reachable:
+ - Rank which teams have the lowest average ranking in the consistency sort.
+ - Simplify the inputs of the console sort function, only need to input the Map.
+ - Create a display method for the team rankings.
+
+ - Draw out an image for what we want the GUI to look like and the things that we want it to do.
+ - Code the baseline for the GUI.
+
+ - Figure out how to write data to the exact specifications of the csv file that we currently have for the current season.
+ - See if we can do this for the season thus far.
+ - See if we can continue to update the data up until the current date.
+
+ - Read through the excel files from the python file to make a map of each teams schedule throughout the season Map<String, ArrayList<String>>
+
+this is later: and important.
+ - List out all of the things we want to include in the algorithm to score players on a given night.
+
+ - Figure out how we want to score them and how we want to weigh each one.
+ - In algorithm we could include a constant on if they are starting or not based on each player.
+
+
+ - Put the display function into a GUI.
+
+
+
+Web Scraping: 
+ - Make a map of teams.
+ - Scrape the web / Buy a data set for the games that have been played thus far in the year to get up to date stats.
+ - Get schedules of teams.
+ - Make map of the injured players of teams.
+ - Compare the maps of injured players and team roster to make another map of eligible players.
+ - Give the program the current date, then scrape the web for the games on the given date.
+
+
+Beyond the current scope:
+
+ - Make a user interface GUI that could be input into a website.
+ - Finish the GUI.
+
+
+Optimization:
+ - Backlog the algorithm to test it (will be free). :)
